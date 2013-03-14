@@ -12,9 +12,9 @@ fasta headers running translate\_fasta\_headers.pl again!
 DESCRIPTION
 ------------
 
-    Replace fasta headers with headers taken from tab delimited file. If no tab file is given,
-    the (potentially long) fasta headers are replaced by short labels "Seq_1", "Seq_2", etc, and
-    the short and original headers are printed to a translation file.
+Replace fasta headers with headers taken from tab delimited file. If no tab file is given,
+the (potentially long) fasta headers are replaced by short labels "Seq\_1", "Seq\_2", etc, and
+the short and original headers are printed to a translation file.
 
 
 USAGE
@@ -58,34 +58,34 @@ OPTIONS
 AUTHOR
 -------
 
-    Johan.Nylander\@bils.se 
+Johan.Nylander\@bils.se 
 
 
 FILES
 -----
 
-    translate_fasta_headers.pl -- Perl script
+* translate\_fasta\_headers.pl -- Perl script
 
-    in.fas -- example file with long fasta headers
+* in.fas -- example file with long fasta headers
 
-    translation.tab -- example translation table
+* translation.tab -- example translation table
 
-    out.fas -- example output with short fasta headers
+* out.fas -- example output with short fasta headers
 
 
 LICENSE AND COPYRIGHT
 ---------------------
 
-    Copyright (c) 2013 Johan Nylander. All rights reserved.
+Copyright (c) 2013 Johan Nylander. All rights reserved.
 
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU General Public License
-    as published by the Free Software Foundation; either version 2
-    of the License, or (at your option) any later version.
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details. 
-    http://www.gnu.org/copyleft/gpl.html 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details. 
+http://www.gnu.org/copyleft/gpl.html 
 
