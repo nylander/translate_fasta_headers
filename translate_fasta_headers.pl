@@ -55,7 +55,7 @@
 
       CREATED: 03/13/2013 01:52:28 PM
 
-     REVISION: 03/14/2013 09:20:06 PM
+     REVISION: 03/14/2013 11:42:59 PM
 
          TODO: Handle non-unique values in the left tabfile column (can't use hash):
                Test if values in translation table are unique. If so,
@@ -190,7 +190,7 @@ sub read_infile {
             $line = trim_white_space($line);
             if ($tabfile) {
                 if (exists $header_hash{$line}) {
-                    print '>', $header_hash{$line}, "\n";
+                    print $PRINT '>', $header_hash{$line}, "\n";
                 }
                 else {
                     die "\nLabel \"$line\" in $file not found in $tabfile.\n";
