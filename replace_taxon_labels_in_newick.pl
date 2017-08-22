@@ -9,10 +9,10 @@
 
         USAGE: ./replace_taxon_labels_in_newick.pl -t translation.tab [-o out.file] treefile(s) 
 
-  DESCRIPTION: Replaces taxon labels in newick string with new ones as defined in tab separated,
+  DESCRIPTION: Replaces taxon labels in Newick string with new ones as defined in tab separated,
                two-column file translation.tab
 
-      OPTIONS: -t, --table translation.tab.  file with table describing what will be translated
+      OPTIONS: -t, --table translation.tab.  File with table describing what will be translated
                                              with what. See below for format.
 
                -h, --help.                   Help text.
@@ -25,10 +25,10 @@
 
         NOTES: Tree is assumed to be in Newick format and on one single line.
                If spaces are discovered in taxon labels, the whole label string is enclosed
-               in single ticks in order to other software to read the output tree. If,
+               in single ticks in order for other software to read the output tree. If,
                on the other hand, single ticks are already present in the labels, extra
                ticks will not be added and a warning will be issued. Please check the output
-               carefully in that case (and make sure to remove your sngle ticks manually).
+               carefully in that case (and make sure to remove your single ticks manually).
 
                Format for translation.tab needs to be tab separated, two columns.
                Example:
@@ -40,11 +40,11 @@
                As an alternative to providing the tab separated list as a separate file, you
                might add the (tab separated) list to the end of this script!
 
-                   $ cp replace_taxon_labels_in_newcik.pl repl.pl
+                   $ cp replace_taxon_labels_in_newick.pl repl.pl
                    $ cat translation.tab >> repl.pl
                    $ ./repl.pl tree.tre
 
-       AUTHOR: Johan Nylander (JN), johan.nylander@bils.se
+       AUTHOR: Johan Nylander (JN), johan.nylander@nbis.se
 
       COMPANY: BILS/NRM
 
@@ -52,7 +52,7 @@
 
       CREATED: 08/26/2015 04:14:19 PM
 
-     REVISION: 09/18/2015 12:01:08 PM
+     REVISION: 08/22/2017 01:14:27 PM
 
 =cut
 
@@ -193,7 +193,7 @@ sub read_tabfile {
 
 #===  FUNCTION  ================================================================
 #         NAME:  read_DATA
-#      VERSION:  09/18/2015 12:00:24 PM
+#      VERSION:  08/22/2017 01:15:31 PM
 #  DESCRIPTION:  read DATA and return hash. Pad strings if they contain white space.
 #   PARAMETERS:  -
 #      RETURNS:  hash (key:short, value:long)
@@ -244,6 +244,9 @@ sub read_DATA {
             }
             $return_hash{$s} = $l;
         }
+    }
+    else {
+        %return_hash = %hash;
     }
 
     return(%return_hash);

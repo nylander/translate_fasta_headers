@@ -1,5 +1,4 @@
-translate\_fasta\_headers
-=======================
+# translate\_fasta\_headers
 
 Translate long fasta headers to short - and back!
 
@@ -11,8 +10,7 @@ fasta headers running `translate_fasta_headers.pl` again!
 And if you created a tree with the short labels, try to back translate using `replace_taxon_labels_in_newick.pl`!
 
 
-DESCRIPTION
-------------
+## DESCRIPTION
 
 Replace fasta headers with headers taken from tab delimited file. If no tab file is given,
 the (potentially long) fasta headers are replaced by short labels "Seq\_1", "Seq\_2", etc, and
@@ -22,27 +20,29 @@ The script for translating labels in newick trees is somewhat limited in capacit
 restrictions of the newick tree format. Use with caution.
 
 
-USAGE
-------
+## USAGE
 
-    ./translate_fasta_headers.pl  [--tabfile=<tabfile.tab>]  [--in=<in.fas>]  [--out=<out.fas>]  <in.fas>
+    ./translate_fasta_headers.pl [--tabfile=<tabfile.tab>] [--in=<in.fas>] [--out=<out.fas>] <in.fas>
 
-    # From long to short labels:
-    ./translate_fasta_headers.pl  --out=out.fas  in.fas
+#### From long to short labels:
 
-    # An back, using a translation table:
-    ./translate_fasta_headers.pl  --tabfile=out.fas.translation.tab  out.fas
+    ./translate_fasta_headers.pl --out=out.fas in.fas
 
-    # Slightly shorter version (see note about the '--out' option below):
-    ./translate_fasta_headers.pl  in.fas  >  out.fas
-    ./translate_fasta_headers.pl  -t in.fas.translation.tab  out.fas
+#### An back, using a translation table:
 
-    # Translate short seq labels in Newick tree to long
-    ./replace_taxon_labels_in_newick.pl  -t out.fas.translation.tab  out.fas.phy
+    ./translate_fasta_headers.pl --tabfile=out.fas.translation.tab out.fas
+
+#### Slightly shorter version (see note about the '--out' option below):
+
+    ./translate_fasta_headers.pl in.fas > out.fas
+    ./translate_fasta_headers.pl -t in.fas.translation.tab out.fas
+
+#### Translate short seq labels in Newick tree to long
+
+    ./replace_taxon_labels_in_newick.pl -t out.fas.translation.tab out.fas.phy
 
 
-OPTIONS
---------
+## OPTIONS
 
 * `translate_fasta_headers.pl`
 
@@ -76,7 +76,7 @@ OPTIONS
 AUTHOR
 -------
 
-Johan.Nylander\@bils.se 
+Johan.Nylander\@nbis.se 
 
 
 FILES
@@ -98,7 +98,7 @@ FILES
 LICENSE AND COPYRIGHT
 ---------------------
 
-Copyright (c) 2013, 2014, 2015 Johan Nylander. All rights reserved.
+Copyright (c) 2013, 2014, 2015, 2016, 2017 Johan Nylander. All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
