@@ -52,7 +52,7 @@
 
       CREATED: 08/26/2015 04:14:19 PM
 
-     REVISION: 08/22/2017 01:14:27 PM
+     REVISION: 08/22/2017 01:43:48 PM
 
 =cut
 
@@ -304,7 +304,7 @@ sub check_white_space_in_labels {
 
 #===  FUNCTION  ================================================================
 #         NAME:  replace_taxon_labels
-#      VERSION:  02/02/2007 01:48:44 AM CET
+#      VERSION:  08/22/2017 01:45:06 PM
 #  DESCRIPTION:  replaces strings with new sequence (taxon) labels
 #   PARAMETERS:  (newick) tree string and reference to hash holding translation table.
 #      RETURNS:  tree string with seq labels replaced
@@ -331,11 +331,14 @@ sub replace_taxon_labels {
         elsif ($tree =~ /,$string,/) {
             $replaced = $tree =~ s/,$string,/,$newlabel,/;      # ',123,' => ',foo,'
         }
-        else {
+        elsif ($tree =~ /,$string\)/) {
             $replaced = $tree =~ s/,$string\)/,$newlabel\)/;    # ',123)' => ',foo)'
         }
+        else {
+            warn "Warning: No substitutions were made for string $string. Check input and output.\n";
+        }
     }
-    die "Error: No substitutions were made. Check output.\n" unless ($replaced);
+    #die "Error: No substitutions were made. Check output.\n" unless ($replaced);
 
     return $tree;
 
