@@ -1,45 +1,59 @@
-#!/usr/bin/perl 
+#!/usr/bin/env perl 
 #===============================================================================
 =pod
 
 =head2
 
-         FILE:  translate_fasta_headers.pl
+         FILE: translate_fasta_headers.pl
 
-        USAGE:  ./translate_fasta_headers.pl  [--tabfile=tabfile.tab]  [--in=in.fas]  [--out=out.fas]  in.fas
+        USAGE: ./translate_fasta_headers.pl [options] <file>
 
-                # From long to short labels:
-                ./translate_fasta_headers.pl  --out=out.fas  in.fas
+               # From long to short labels:
+               ./translate_fasta_headers.pl --out=short.fas long.fas
 
-                # An back, using a translation table:
-                ./translate_fasta_headers.pl  --tabfile=out.fas.translation.tab  out.fas
+               # And back, using a translation table:
+               ./translate_fasta_headers.pl --tabfile=short.fas.translation.tab short.fas
 
-                # Slightly shorter/different version:
-                ./translate_fasta_headers.pl  in.fas  >  out.fas
-                ./translate_fasta_headers.pl  -t in.fas.translation.tab  out.fas  >  back.fas
+               # Slightly shorter/different version:
+               ./translate_fasta_headers.pl long.fas > short.fas
+               ./translate_fasta_headers.pl -t long.fas.translation.tab short.fas > back.fas
+
+               # Use your own prefix:
+               ./translate_fasta_headers.pl --prefix='Own_' long.fas > short.fas
 
 
-  DESCRIPTION:  Replace fasta headers with headers taken from tab delimited file. If no tab file is given,
-                the (potentially long) fasta headers are replaced by short labels "Seq_1", "Seq_2", etc, and
-                the short and original headers are printed to a translation file.
+  DESCRIPTION: Replace fasta headers with headers taken from tab delimited file.
+               If no tab file is given, the (potentially long) fasta headers are replaced 
+               by short labels "Seq_1", "Seq_2", etc, and the short and original headers
+               are printed to a translation file.
 
-      OPTIONS:  tabfile=<filename> -- Specify tab-separated translation file with unique "short" labels to the left,
-                                      and "long" names to the right. Translation will be from left to right.
+      OPTIONS: -t, --tabfile=<filename> -- Specify tab-separated translation file with
+                                           unique "short" labels to the left, and "long"
+                                           names to the right. Translation will be from
+                                           left to right.
 
-                in=<filename>      -- Specify name of fasta file. Can be skipped as script reads files from STDIN.
+               -i, --in=<filename>      -- Specify name of fasta file. Can be skipped as
+                                           script reads files from STDIN.
 
-                out=<filename>     -- Specify output file for the fasta sequences. Note: If --out=<filename> is
-                                      specified, the translation file will be named <filename>.translation.tab.
-                                      This simplifies back translation. If '--out' is not used, the translation
-                                      file will be named after the infile!
+               -o, --out=<filename>     -- Specify output file for the fasta sequences.
+                                           Note: If --out=<filename> is specified, the
+                                           translation file will be named
+                                           <filename>.translation.tab. This simplifies
+                                           back translation. If '--out' is not used,
+                                           the translation file will be named after
+                                           the infile!
 
-                notab              -- Do not create a translation file.
+               -n, --notab              -- Do not create a translation file.
 
-                forceorder         -- [NOT IMPLEMENTED] translate in order of appearance in the fasta file, and use
-                                      the same order as in the tabfile - without rigid checking of the names! This
-                                      allows non-unique labels in the left column.
+               -p, --prefix=<string>    -- Prefix for short label. Defaults to 'Seq_'.
 
-                help               -- Show this help text and quit.
+               -f, --forceorder         -- [NOT IMPLEMENTED] translate in order of
+                                           appearance in the fasta file, and use
+                                           the same order as in the tabfile - without
+                                           rigid checking of the names! This allows
+                                           non-unique labels in the left column.
+
+                -h, --help              -- Show this help text and quit.
 
  REQUIREMENTS: ---
 
@@ -47,25 +61,27 @@
 
         NOTES: ---
 
-       AUTHOR: Johan.Nylander\@bils.se 
+       AUTHOR: Johan.Nylander\@nbis.se 
 
-      COMPANY: BILS/NRM
+      COMPANY: NBIS/NRM
 
-      VERSION: 1.0
+      VERSION: 1.0.1
 
       CREATED: 03/13/2013 01:52:28 PM
 
-     REVISION: 03/14/2013 11:42:59 PM
+     REVISION: 01/10/2018 12:59:31 PM
 
-         TODO: Handle non-unique values in the left tabfile column (can't use hash):
+         TODO: Handle non-unique values in the left tabfile column
+               (can't use hash):
                Test if values in translation table are unique. If so,
                use read_tabfile. If not, read into two arrays, check
                for same lengths, and then use an iterator while reading
                the infile. Warn if number of sequences doesn't match 
                number of entries in the tab file. Plus give a warning
-               that labels where not unique. Use the array approach when '--forceorder'.
+               that labels where not unique. Use the array approach
+               when '--forceorder'.
 
- LICENSE AND COPYRIGHT: Copyright (c) 2013 Johan Nylander. All rights reserved.
+ LICENSE AND COPYRIGHT: Copyright (c) 2013-2018 Johan Nylander. All rights reserved.
 
               This program is free software; you can redistribute it and/or
               modify it under the terms of the GNU General Public License
@@ -87,17 +103,18 @@ use warnings;
 use Getopt::Long;
 
 ## Globals
+my $prefix       = 'Seq_'; # Prefix for short names
 my $tabfile      = q{};
 my $in           = q{};
 my $out          = q{};
 my $notab        = q{};
-#my $forceorder   = q{};
 my $help         = q{};
-my %header_hash  = (); # Key: short, value: long.
-my @short_array  = (); # Array with short headers.
-my @long_array   = (); # Array with long headers.
-my $PRINT;             # Print file handle. Using the typeglob notation below
-my $IN;                # in order to use STDOUT as a variable.
+my %header_hash  = ();     # Key: short, value: long.
+my @short_array  = ();     # Array with short headers.
+my @long_array   = ();     # Array with long headers.
+my $PRINT;                 # Print file handle. Using the typeglob notation below
+my $IN;                    # in order to use STDOUT as a variable.
+#my $forceorder   = q{};
 
 ## If no arguments
 exec("perldoc", $0) unless (@ARGV);
@@ -107,6 +124,7 @@ my $r = GetOptions("tabfile|translationfile=s" => \$tabfile,
                    "out=s"                     => \$out,
                    "notab"                     => \$notab,
                    "in=s"                      => \$in,
+                   "prefix=s"                  => \$prefix,
                    #"forceorder"                => \$forceorder,
                    "help"                      => sub { exec("perldoc", $0); exit(0); },
                   );
@@ -126,11 +144,11 @@ else {
 
 ## If infile
 if ($in) {
-    read_infile($in);
+    read_infile($in, $prefix);
 }
 else {
     while (my $infile = shift(@ARGV)) {
-        read_infile($infile);
+        read_infile($infile, $prefix);
     }
 }
 
@@ -139,19 +157,18 @@ exit(0);
 
 #===  FUNCTION  ================================================================
 #         NAME:  read_infile
-#      VERSION:  03/14/2013 10:07:26 PM
+#      VERSION:  01/10/2018 01:03:55 PM
 #  DESCRIPTION:  Reads a tab separated file and returns a hash. Expects all values
-#                in left column ("short") to be unique
-#   PARAMETERS:  filename
+#                in left column ("short") to be unique!
+#   PARAMETERS:  filename, prefix
 #      RETURNS:  hash: key:short, value:long
-#         TODO:  
+#         TODO: 
 #===============================================================================
 sub read_infile {
 
-    my ($file)           = @_;
-    my @in_headers_array = ();
-    my $counter          = 1;
-    my $shortlabel       = 'Seq_';
+    my ($file, $shortlabel) = (@_);
+    my @in_headers_array    = ();
+    my $counter             = 1;
     my $OUTTAB;
     my $outtabfile;
 
@@ -230,7 +247,7 @@ sub read_tabfile {
     open my $TAB, "<", $file or die "Could not open $file for reading : $! \n";
     while(<$TAB>) {
         chomp;
-        next if (/^\s+$/);
+        next if (/^\s*$/);
         my ($short, $long) = split /\t/, $_;
         $short = trim_white_space($short);
         $long = trim_white_space($long);
