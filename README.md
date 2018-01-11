@@ -6,9 +6,16 @@ Your alignment program X doesn't allow strings longer than n characters, but all
 in the fasta headers of your file. What to do?
 
 Use `translate_fasta_headers.pl` on your fasta file to create short labels and a translation
-table. Run your program X, and then back translate your fasta headers running `translate_fasta_headers.pl` again!
+table. Run your program X, and then back-translate your fasta headers by running `translate_fasta_headers.pl` again!
 
 And if you created a tree with the short labels, try to back-translate using `replace_taxon_labels_in_newick.pl`!
+
+If you only wish to transform your long fasta headers to short, without keeping the information
+about how they where translated, the quick solution might be to use `awk`:
+
+    awk '/>/{$0=">Seq_"++n}1' long.fas
+
+But, if you want to be able to back-translate, read on!
 
 
 ## DESCRIPTION
