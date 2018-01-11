@@ -56,14 +56,6 @@ restrictions of the Newick tree format. Use with caution.
 
     ./replace_taxon_labels_in_newick.pl -t long.fas.translation.tab short.fas.phy
 
-#### Use your own prefix:
-
-    ./translate_fasta_headers.pl --prefix='Own_' long.fas 
-
-#### Translate short seq labels in Newick tree to long:
-
-    ./replace_taxon_labels_in_newick.pl -t long.fas.translation.tab short.fas.phy
-
 
 ## OPTIONS
 
