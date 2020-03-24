@@ -2,16 +2,19 @@
 
 Translate long fasta headers to short - and back!
 
-Your alignment program X doesn't allow strings longer than n characters, but all your info is
-in the fasta headers of your file. What to do?
+Your alignment program X doesn't allow strings longer than n characters, but
+all your info is in the fasta headers of your file. What to do?
 
-Use `translate_fasta_headers.pl` on your fasta file to create short labels and a translation
-table. Run your program X, and then back-translate your fasta headers by running `translate_fasta_headers.pl` again!
+Use `translate_fasta_headers.pl` on your fasta file to create short labels and
+a translation table. Run your program X, and then back-translate your fasta
+headers by running `translate_fasta_headers.pl` again!
 
-And if you created a tree with the short labels, try to back-translate using `replace_taxon_labels_in_newick.pl`!
+And if you created a tree with the short labels, try to back-translate using
+`replace_taxon_labels_in_newick.pl`!
 
-If you only wish to transform your long fasta headers to short, without keeping the information
-about how they where translated, the quick solution might be to use `awk`:
+If you only wish to transform your long fasta headers to short, without keeping
+the information about how they where translated, the quick solution might be to
+use `awk`:
 
     awk '/>/{$0=">Seq_"++n}1' long.fas
 
@@ -20,15 +23,16 @@ But, if you want to be able to back-translate, read on!
 
 ## DESCRIPTION
 
-Replace fasta headers with headers taken from tab delimited file. If no tab file is given,
-the (potentially long) fasta headers are replaced by short labels "Seq\_1", "Seq\_2", etc, and
-the short and original headers are printed to a translation file.
+Replace fasta headers with headers taken from tab delimited file. If no tab
+file is given, the (potentially long) fasta headers are replaced by short
+labels "Seq\_1", "Seq\_2", etc, and the short and original headers are printed
+to a translation file.
 
-If you wish, you may choose your own prefix (instead of `Seq_`). This could be handy if, for
-example, you wish to concatenate files. 
+If you wish, you may choose your own prefix (instead of `Seq_`). This could be
+handy if, for example, you wish to concatenate files. 
 
-The script for translating labels in Newick trees is somewhat limited in capacity due to the
-restrictions of the Newick tree format. Use with caution.
+The script for translating labels in Newick trees is somewhat limited in
+capacity due to the restrictions of the Newick tree format. Use with caution.
 
 
 ## USAGE
@@ -61,24 +65,28 @@ restrictions of the Newick tree format. Use with caution.
 
 ### `translate_fasta_headers.pl`
 
-* `-t, --tabfile=<filename>`  Specify tab-separated translation file with unique "short" labels to the left,
-and "long" names to the right. Translation will be from left to right.
+* `-t, --tabfile=<filename>`  Specify tab-separated translation file with
+  unique "short" labels to the left, and "long" names to the right. Translation
+  will be from left to right.
 * `-o, --out=<filename>`  Specify output file for the fasta sequences.
-**Note**: If `--out=<filename>` is specified, the translation file will be named
-`<filename>.translation.tab`. This simplifies back translation.
-If, on the other hand, `--out` is not used, the translation file will be named after the infile!
-* `-i, --in=<filename>`  Specify name of fasta file. Can be skipped as script reads files from STDIN.
+  **Note**: If `--out=<filename>` is specified, the translation file will be
+  named `<filename>.translation.tab`. This simplifies back translation.  If, on
+  the other hand, `--out` is not used, the translation file will be named after
+  the infile!
+* `-i, --in=<filename>`  Specify name of fasta file. Can be skipped as script
+  reads files from STDIN.
 * `-n, --notab`  Do not create a translation file.
-* `-p, --prefix=<string>`  User your own prefix (default is `Seq_`). A numerical will be added to the
-labels (e.g. `Own_1`, `Own_2`, ...)
-* `-f, --forceorder`  [NOT YET IMPLEMENTED!] translate in order of appearance in the fasta file, and use
-the same order as in the tabfile - without rigid checking of the names! This
-allows non-unique labels in the left column.
+* `-p, --prefix=<string>`  User your own prefix (default is `Seq_`). A
+  numerical will be added to the labels (e.g. `Own_1`, `Own_2`, ...)
+* `-f, --forceorder`  [NOT YET IMPLEMENTED!] translate in order of appearance
+  in the fasta file, and use the same order as in the tabfile - without rigid
+  checking of the names! This allows non-unique labels in the left column.
 * `-h, --help`  Show this help text and quit.
 
 ### `replace_taxon_labels_in_newick.pl`
 
-* `-t, --table=<translation.tab>`  file with table describing what will be translated with what.
+* `-t, --table=<translation.tab>`  file with table describing what will be
+  translated with what.
 * `-h, --help`  Help text.
 * `-o, --out=<out.file>`  Print to outfile `out.file`, else to STDOUT.
 
@@ -102,16 +110,23 @@ Johan.Nylander\@nbis.se
 
 ## LICENSE AND COPYRIGHT
 
-Copyright (c) 2013, 2014, 2015, 2016, 2017, 2018 Johan Nylander. All rights reserved.
+Copyright (c) 2013-2020 Johan Nylander
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details. 
-http://www.gnu.org/copyleft/gpl.html 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
