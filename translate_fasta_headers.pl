@@ -1,4 +1,4 @@
-#!/usr/bin/env perl 
+#!/usr/bin/env perl
 #===============================================================================
 =pod
 
@@ -53,6 +53,8 @@
                                            rigid checking of the names! This allows
                                            non-unique labels in the left column.
 
+                -v, --version           -- Print version number and quit.
+
                 -h, --help              -- Show this help text and quit.
 
  REQUIREMENTS: ---
@@ -65,11 +67,11 @@
 
       COMPANY: NBIS/NRM
 
-      VERSION: 1.0.1
+      VERSION: 1.0.2
 
       CREATED: 03/13/2013 01:52:28 PM
 
-     REVISION: 01/10/2018 12:59:31 PM
+     REVISION: ons 11 maj 2022 16:34:30
 
          TODO: Handle non-unique values in the left tabfile column
                (can't use hash):
@@ -81,8 +83,8 @@
                that labels where not unique. Use the array approach
                when '--forceorder'.
 
-      LICENSE: Copyright (c) 2019-2020 Johan Nylander
-               
+      LICENSE: Copyright (c) 2019-2022 Johan Nylander
+
                Permission is hereby granted, free of charge, to any person
                obtaining a copy of this software and associated documentation
                files (the "Software"), to deal in the Software without
@@ -91,10 +93,10 @@
                sell copies of the Software, and to permit persons to whom the
                Software is furnished to do so, subject to the following
                conditions:
-               
+
                The above copyright notice and this permission notice shall be
                included in all copies or substantial portions of the Software.
-               
+
                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
                EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
                OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -103,7 +105,7 @@
                WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
                FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
                OTHER DEALINGS IN THE SOFTWARE.
- 
+
 
 =cut
 #===============================================================================
@@ -114,6 +116,7 @@ use Getopt::Long;
 
 ## Globals
 my $prefix       = 'Seq_'; # Prefix for short names
+my $version      = '1.0.2'; # Also in pod
 my $tabfile      = q{};
 my $in           = q{};
 my $out          = q{};
@@ -130,14 +133,16 @@ my $IN;                    # in order to use STDOUT as a variable.
 exec("perldoc", $0) unless (@ARGV);
 
 ## Get args
-my $r = GetOptions("tabfile|translationfile=s" => \$tabfile,
-                   "out=s"                     => \$out,
-                   "notab"                     => \$notab,
-                   "in=s"                      => \$in,
-                   "prefix=s"                  => \$prefix,
-                   #"forceorder"                => \$forceorder,
-                   "help"                      => sub { exec("perldoc", $0); exit(0); },
-                  );
+GetOptions(
+    "tabfile|translationfile=s" => \$tabfile,
+    "out=s"                     => \$out,
+    "notab"                     => \$notab,
+    "in=s"                      => \$in,
+    "prefix=s"                  => \$prefix,
+    #"forceorder"                => \$forceorder,
+    "version"                   => sub { print "$version\n"; exit(0); },
+    "help"                      => sub { exec("perldoc", $0); exit(0); },
+);
 
 ## If tabfile, read it assuming "short" labels in the left column
 if ($tabfile) {
@@ -172,7 +177,7 @@ exit(0);
 #                in left column ("short") to be unique!
 #   PARAMETERS:  filename, prefix
 #      RETURNS:  hash: key:short, value:long
-#         TODO: 
+#         TODO:
 #===============================================================================
 sub read_infile {
 
@@ -285,12 +290,12 @@ sub read_tabfile {
 #===============================================================================
 sub trim_white_space {
 
-	my ($a) = @_;
+    my ($a) = @_;
 
-	$a =~ s/^\s+//;
-	$a =~ s/\s+$//;
+    $a =~ s/^\s+//;
+    $a =~ s/\s+$//;
 
-	return($a);
+    return($a);
 
 } # end of trim_white_space
 

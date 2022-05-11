@@ -1,4 +1,4 @@
-#!/usr/bin/env perl 
+#!/usr/bin/env perl
 #===============================================================================
 =pod
 
@@ -7,19 +7,21 @@
 
          FILE: replace_taxon_labels_in_newick.pl
 
-        USAGE: ./replace_taxon_labels_in_newick.pl -t translation.tab [-o out.file] treefile(s) 
+        USAGE: ./replace_taxon_labels_in_newick.pl -t translation.tab [-o out.file] treefile(s)
 
   DESCRIPTION: Replaces taxon labels in Newick string with new ones as defined in tab separated,
                two-column file translation.tab
 
-      OPTIONS: -t, --table translation.tab.  File with table describing what will be translated
-                                             with what. See below for format.
+      OPTIONS: -t, --table translation.tab  File with table describing what will be translated
+                                            with what. See below for format.
 
-               -h, --help.                   Help text.
+               -h, --help                   Help text.
 
-               -o, --out out.file.           Print to outfile file.out, else to STDOUT.
+               -v, --version                Print version.
 
- REQUIREMENTS: ---
+               -o, --out file.out           Print to outfile file.out, else to STDOUT.
+
+ REQUIREMENTS: perldoc needs to be installed for displaying help.
 
          BUGS: ---
 
@@ -48,14 +50,14 @@
 
       COMPANY: BILS/NRM
 
-      VERSION: 1.0
+      VERSION: 1.0.2
 
       CREATED: 08/26/2015 04:14:19 PM
 
-     REVISION: 08/22/2017 01:43:48 PM
+     REVISION: ons 11 maj 2022 16:40:44
 
-      LICENSE: Copyright (c) 2019-2020 Johan Nylander
-               
+      LICENSE: Copyright (c) 2019-2022 Johan Nylander
+
                Permission is hereby granted, free of charge, to any person
                obtaining a copy of this software and associated documentation
                files (the "Software"), to deal in the Software without
@@ -64,10 +66,10 @@
                sell copies of the Software, and to permit persons to whom the
                Software is furnished to do so, subject to the following
                conditions:
-               
+
                The above copyright notice and this permission notice shall be
                included in all copies or substantial portions of the Software.
-               
+
                THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
                EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
                OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -92,15 +94,17 @@ my $PRINT;             # Print file handle. Using the typeglob notation below
 my $IN;                # in order to use STDOUT as a variable.
 my $tabfile      = q{};
 my $out          = q{};
-my $VERBOSE      = 0;
+my $version      = '1.0.2'; # also in pod
 
 ## Arguments
 exec("perldoc", $0) unless (@ARGV);
-my $r = GetOptions("tabfile=s" => \$tabfile,
-                   "out=s"     => \$out,
-                   "verbose!"  => \$VERBOSE,
-                   "help"      => sub { exec("perldoc", $0); exit(0); },
-                  );
+
+GetOptions(
+    "tabfile=s" => \$tabfile,
+    "out=s"     => \$out,
+    "version"   => sub { print "$version\n"; exit(0); },
+    "help"      => sub { exec("perldoc", $0); exit(0); },
+);
 
 ## If tabfile, read it assuming "short" labels in the left column
 if ($tabfile) {
