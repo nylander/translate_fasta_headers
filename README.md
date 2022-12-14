@@ -93,7 +93,7 @@ Translate short seq labels in Newick tree to long:
 
 ### Script `replace_taxon_labels_in_newick.pl`
 
-- `-t, --table=<translation.tab>` --  File with table describing what will be
+- `-t, --tabfile=<translation.tab>` --  File with table describing what will be
   translated with what.
 
 - `-o, --out=<out.file>` --  Print to outfile `out.file`, else to STDOUT.

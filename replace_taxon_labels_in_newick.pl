@@ -12,14 +12,14 @@
   DESCRIPTION: Replaces taxon labels in Newick string with new ones as defined in tab separated,
                two-column file translation.tab
 
-      OPTIONS: -t, --table translation.tab  File with table describing what will be translated
-                                            with what. See below for format.
+      OPTIONS: -t, --tabfile translation.tab  File with table describing what will be translated
+                                              with what. See below for format.
 
-               -h, --help                   Help text.
+               -h, --help                     Help text.
 
-               -v, --version                Print version.
+               -v, --version                  Print version.
 
-               -o, --out file.out           Print to outfile file.out, else to STDOUT.
+               -o, --out file.out             Print to outfile file.out, else to STDOUT.
 
  REQUIREMENTS: perldoc needs to be installed for displaying help.
 
@@ -54,7 +54,7 @@
 
       CREATED: 08/26/2015 04:14:19 PM
 
-     REVISION: ons 11 maj 2022 16:40:44
+     REVISION: ons 14 dec 2022 16:39:15
 
       LICENSE: Copyright (c) 2019-2022 Johan Nylander
 
