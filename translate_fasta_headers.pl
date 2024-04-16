@@ -2,112 +2,98 @@
 #===============================================================================
 =pod
 
-=head2
+=head1 NAME
 
-         FILE: translate_fasta_headers.pl
+translate_fasta_headers.pl - translate fasta headers from long to short -- and back!
 
-        USAGE: ./translate_fasta_headers.pl [options] <file>
+=head1 SYNOPSIS
 
-               # From long to short labels:
-               ./translate_fasta_headers.pl --out=short.fas long.fas
+B<translate_fasta_headers.pl> [options] F<file>
 
-               # And back, using a translation table:
-               ./translate_fasta_headers.pl --tabfile=short.fas.translation.tab short.fas
+=head1 DESCRIPTION
 
-               # Slightly shorter/different version:
-               ./translate_fasta_headers.pl long.fas > short.fas
-               ./translate_fasta_headers.pl -t long.fas.translation.tab short.fas > back.fas
+Replace fasta headers with headers taken from tab delimited file.  If no tab
+file is given, the (potentially long) fasta headers are replaced by short
+labels "Seq_1", "Seq_2", etc, and the short and original headers are printed to
+a translation file.
 
-               # Use your own prefix:
-               ./translate_fasta_headers.pl --prefix='Own_' long.fas > short.fas
+=head1 OPTIONS
 
+=over 4
 
-  DESCRIPTION: Replace fasta headers with headers taken from tab delimited file.
-               If no tab file is given, the (potentially long) fasta headers are replaced 
-               by short labels "Seq_1", "Seq_2", etc, and the short and original headers
-               are printed to a translation file.
+=item B<-t, --tabfile>=F<filename>
 
-      OPTIONS: -t, --tabfile=<filename> -- Specify tab-separated translation file with
-                                           unique "short" labels to the left, and "long"
-                                           names to the right. Translation will be from
-                                           left to right.
+Specify tab-separated translation file with unique "short" labels to the left,
+and "long" names to the right. Translation will be from left to right.
 
-               -i, --in=<filename>      -- Specify name of fasta file. Can be skipped as
-                                           script reads files from STDIN.
+=item B<-i, --in>=F<filename>
 
-               -o, --out=<filename>     -- Specify output file for the fasta sequences.
-                                           Note: If --out=<filename> is specified, the
-                                           translation file will be named
-                                           <filename>.translation.tab. This simplifies
-                                           back translation. If '--out' is not used,
-                                           the translation file will be named after
-                                           the infile!
+Specify name of fasta file. Can be skipped as script reads files from STDIN.
 
-               -n, --notab              -- Do not create a translation file.
+=item B<-o, --out>=F<filename>
 
-               -p, --prefix=<string>    -- Prefix for short label. Defaults to 'Seq_'.
+Specify output file for the fasta sequences.  Note: If b<--out>=F<filename> is
+specified, the translation file will be named F<filename>.translation.tab. This
+simplifies back translation. If B<--out> is not used, the translation file will
+be named after the infile!
 
-               -f, --forceorder         -- [NOT IMPLEMENTED] translate in order of
-                                           appearance in the fasta file, and use
-                                           the same order as in the tabfile - without
-                                           rigid checking of the names! This allows
-                                           non-unique labels in the left column.
+=item B<-n, --notab>
 
-                -v, --version           -- Print version number and quit.
+Do not create a translation file.
 
-                -h, --help              -- Show this help text and quit.
+=item B<-p, --prefix>=I<string>
 
- REQUIREMENTS: ---
+Prefix for short label. Defaults to I<Seq_>.
 
-         BUGS: ---
+=item B<-v, --version>
 
-        NOTES: ---
+Print version number and quit.
 
-       AUTHOR: Johan.Nylander\@nbis.se 
+=item B<-h, --help>
 
-      COMPANY: NBIS/NRM
+Show this help text and quit.
 
-      VERSION: 1.0.2
+=back
 
-      CREATED: 03/13/2013 01:52:28 PM
+=head1 VERSION
 
-     REVISION: ons 11 maj 2022 16:34:30
+1.1
 
-         TODO: Handle non-unique values in the left tabfile column
-               (can't use hash):
-               Test if values in translation table are unique. If so,
-               use read_tabfile. If not, read into two arrays, check
-               for same lengths, and then use an iterator while reading
-               the infile. Warn if number of sequences doesn't match 
-               number of entries in the tab file. Plus give a warning
-               that labels where not unique. Use the array approach
-               when '--forceorder'.
+=head1 AUTHOR
 
-      LICENSE: Copyright (c) 2019-2022 Johan Nylander
+Johan Nylander
 
-               Permission is hereby granted, free of charge, to any person
-               obtaining a copy of this software and associated documentation
-               files (the "Software"), to deal in the Software without
-               restriction, including without limitation the rights to use,
-               copy, modify, merge, publish, distribute, sublicense, and/or
-               sell copies of the Software, and to permit persons to whom the
-               Software is furnished to do so, subject to the following
-               conditions:
+=head1 DOWNLOAD
 
-               The above copyright notice and this permission notice shall be
-               included in all copies or substantial portions of the Software.
+L<https://github.com/nylander/translate_fasta_headers>
 
-               THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-               EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-               OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-               NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-               HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-               WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-               FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-               OTHER DEALINGS IN THE SOFTWARE.
+=head1 COPYRIGHT AND LICENSE
 
+Copyright (c) 2019-2024 Johan Nylander
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
 
 =cut
+
 #===============================================================================
 
 use strict;
@@ -116,7 +102,7 @@ use Getopt::Long;
 
 ## Globals
 my $prefix       = 'Seq_'; # Prefix for short names
-my $version      = '1.0.2'; # Also in pod
+my $version      = '1.1'; # Also in pod
 my $tabfile      = q{};
 my $in           = q{};
 my $out          = q{};
@@ -170,16 +156,17 @@ else {
 exit(0);
 
 
-#===  FUNCTION  ================================================================
-#         NAME:  read_infile
-#      VERSION:  01/10/2018 01:03:55 PM
-#  DESCRIPTION:  Reads a tab separated file and returns a hash. Expects all values
-#                in left column ("short") to be unique!
-#   PARAMETERS:  filename, prefix
-#      RETURNS:  hash: key:short, value:long
-#         TODO:
-#===============================================================================
 sub read_infile {
+
+    #===  FUNCTION  ================================================================
+    #         NAME:  read_infile
+    #      VERSION:  01/10/2018 01:03:55 PM
+    #  DESCRIPTION:  Reads a tab separated file and returns a hash. Expects all values
+    #                in left column ("short") to be unique!
+    #   PARAMETERS:  filename, prefix
+    #      RETURNS:  hash: key:short, value:long
+    #         TODO:
+    #===============================================================================
 
     my ($file, $shortlabel) = (@_);
     my @in_headers_array    = ();
@@ -245,15 +232,16 @@ sub read_infile {
 } # end of read_infile
 
 
-#===  FUNCTION  ================================================================
-#         NAME:  read_tabfile
-#      VERSION:  03/14/2013 09:42:47 PM
-#  DESCRIPTION:  read tabfile and return hash
-#   PARAMETERS:  filename
-#      RETURNS:  hash (key:short, value:long)
-#         TODO:  ????
-#===============================================================================
 sub read_tabfile {
+
+    #===  FUNCTION  ================================================================
+    #         NAME:  read_tabfile
+    #      VERSION:  03/14/2013 09:42:47 PM
+    #  DESCRIPTION:  read tabfile and return hash
+    #   PARAMETERS:  filename
+    #      RETURNS:  hash (key:short, value:long)
+    #         TODO:  ????
+    #===============================================================================
 
     my ($file) = @_; 
 
@@ -280,15 +268,16 @@ sub read_tabfile {
 } # end of read_tabfile
 
 
-#===  FUNCTION  ================================================================
-#         NAME:  trim_white_space
-#      VERSION:  03/14/2013 09:44:02 PM
-#  DESCRIPTION:  trim white space from both ends of string 
-#   PARAMETERS:  string
-#      RETURNS:  string
-#         TODO:  ????
-#===============================================================================
 sub trim_white_space {
+
+    #===  FUNCTION  ================================================================
+    #         NAME:  trim_white_space
+    #      VERSION:  03/14/2013 09:44:02 PM
+    #  DESCRIPTION:  trim white space from both ends of string 
+    #   PARAMETERS:  string
+    #      RETURNS:  string
+    #         TODO:  ????
+    #===============================================================================
 
     my ($a) = @_;
 

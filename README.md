@@ -9,8 +9,8 @@ Use `translate_fasta_headers.pl` on your fasta file to create short labels and
 a translation table. Run your program X, and then back-translate your fasta
 headers by running `translate_fasta_headers.pl` again!
 
-And if you created a tree with the short labels, try to back-translate using
-`replace_taxon_labels_in_newick.pl`!
+And if you created a tree with the short (or long) labels, try to
+back-translate using `replace_taxon_labels_in_newick.pl`!
 
 If you only wish to transform your long fasta headers to short, without keeping
 the information about how they where translated, the quick solution might be to
@@ -31,11 +31,13 @@ If you wish, you may choose your own prefix (instead of `Seq_`). This could be
 handy if, for example, you wish to concatenate files.
 
 The script for translating labels in Newick trees is somewhat limited in
-capacity due to the restrictions of the Newick tree format. Use with caution.
+capacity due to the restrictions and/or peculiarities of the Newick tree
+format. Use with caution.
 
 ## Usage
 
-    $ translate_fasta_headers.pl [options] <file>
+    $ translate_fasta_headers.pl [options] <fasta file>
+    $ replace_taxon_labels_in_newick.pl [options] <newick file>
 
 ## Examples
 
@@ -60,6 +62,10 @@ Translate short seq labels in Newick tree to long:
 
     $ replace_taxon_labels_in_newick.pl -t long.fas.translation.tab short.fas.phy
 
+Print seq labels in Newick tree:
+
+    $ replace_taxon_labels_in_newick.pl -l short.fas.phy
+
 ## Options
 
 ### Script `translate_fasta_headers.pl`
@@ -67,75 +73,48 @@ Translate short seq labels in Newick tree to long:
 - `-t, --tabfile=<filename>` --  Specify tab-separated translation file with
   unique "short" labels to the left, and "long" names to the right. Translation
   will be from left to right.
-
 - `-o, --out=<filename>` --  Specify output file for the fasta sequences.
   **Note**: If `--out=<filename>` is specified, the translation file will be
   named `<filename>.translation.tab`. This simplifies back translation.  If, on
   the other hand, `--out` is not used, the translation file will be named after
   the infile!
-
 - `-i, --in=<filename>` --  Specify name of fasta file. Can be skipped as
   script reads files from STDIN.
-
 - `-n, --notab` --  Do not create a translation file.
-
 - `-p, --prefix=<string>` --  User your own prefix (default is `Seq_`). A
   numerical will be added to the labels (e.g. `Own_1`, `Own_2`, ...)
-
-- `-f, --forceorder` --  [NOT YET IMPLEMENTED!] translate in order of
-  appearance in the fasta file, and use the same order as in the tabfile --
-  without rigid checking of the names! This allows non-unique labels in the
-  left column.
-
 - `-v, --version` --  Print version number and quit.
-
 - `-h, --help` --  Show this help text and quit.
 
 ### Script `replace_taxon_labels_in_newick.pl`
 
 - `-t, --tabfile=<translation.tab>` --  File with table describing what will be
   translated with what.
-
+- `-l,-p, --labels` -- Print taxon labels in tree. Option does not require a
+  translation table.
+- `--no-quotemeta` -- Turn off escaping of special symbols in the replacements.
 - `-o, --out=<out.file>` --  Print to outfile `out.file`, else to STDOUT.
-
 - `-v, --version` --  Print version number and quit.
-
 - `-h, --help` --  Help text.
 
 ## Author
 
-Johan.Nylander\@nbis.se
+Johan.Nylander
 
 ## Files
 
-- `translate_fasta_headers.pl` -- Perl script
-- `replace_taxon_labels_in_newick.pl` --  Perl script
-- `data/long.fas` --  Example file with long fasta headers
-- `data/short.fas.translation.tab` --  Example translation table
-- `data/short.fas` --  Example output with short fasta headers
-- `data/short.fas.phy` --  Example Newick tree with short labels
-- `README.md` --  Documentation, markdown format
-- `README.pdf` --  Documentation, PDF format
+- [`translate_fasta_headers.pl`](translate_fasta_headers.pl) -- Perl script
+- [`replace_taxon_labels_in_newick.pl`](replace_taxon_labels_in_newick.pl) --  Perl script
+- [`data/long.fas`](data/long.fas) --  Example file with long fasta headers
+- [`data/short.fas.translation.tab`](data/short.fas.translation.tab) --  Example translation table
+- [`data/short.fas`](data/short.fas) --  Example output with short fasta headers
+- [`data/short.fas.phy`](data/short.fas.phy) --  Example Newick tree with short labels
+- [`README.md`](README.md) --  Documentation, markdown format
+- [`README.pdf`](README.pdf) --  Documentation, PDF format
 
 ## License and Copyright
 
-Copyright (c) 2013-2022 Johan Nylander
+Copyright (c) 2013-2024 Johan Nylander
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+[LICENSE](LICENSE)
 
