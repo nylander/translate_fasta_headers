@@ -36,7 +36,7 @@ format. Use with caution.
 
 ## Usage
 
-    $ translate_fasta_headers.pl [options] <fasta file>
+    $ translate_fasta_headers.pl [options] <fasta input>
     $ replace_taxon_labels_in_newick.pl [options] <newick file>
 
 ## Examples
@@ -49,10 +49,20 @@ And back, using a translation table:
 
     $ translate_fasta_headers.pl --tabfile=short.fas.translation.tab short.fas
 
-Slightly shorter version (see note about the `--out` option below):
+Slightly shorter version (see note about the `--out` option below about the
+name of the auto-generated translation file!):
 
     $ translate_fasta_headers.pl long.fas > short.fas
     $ translate_fasta_headers.pl -t long.fas.translation.tab short.fas
+
+Handle compressed (gzip) fasta files:
+
+    $ translate_fasta_headers.pl long.fas.gz | gzip > short.fas.gz
+    $ translate_fasta_headers.pl -t long.fas.gz.translation.tab short.fas.gz
+
+Read fasta format from STDIN
+
+    $ cat short.fas | ./translate_fasta_headers.pl -t short.fas.translation.tab -
 
 Use your own prefix:
 
@@ -77,7 +87,7 @@ Print seq labels in Newick tree:
   **Note**: If `--out=<filename>` is specified, the translation file will be
   named `<filename>.translation.tab`. This simplifies back translation.  If, on
   the other hand, `--out` is not used, the translation file will be named after
-  the infile!
+  the infile (and written in the same folder as the infile)!
 - `-i, --in=<filename>` --  Specify name of fasta file (can be
   gzip-compressed). Can be skipped as script reads files from ARGV.
 - `-n, --notab` --  Do not create a translation file.
@@ -99,18 +109,18 @@ Print seq labels in Newick tree:
 
 ## Author
 
-Johan.Nylander
+Johan Nylander
 
 ## Files
 
 - [`translate_fasta_headers.pl`](translate_fasta_headers.pl) -- Perl script
-- [`replace_taxon_labels_in_newick.pl`](replace_taxon_labels_in_newick.pl) --  Perl script
-- [`data/long.fas`](data/long.fas) --  Example file with long fasta headers
-- [`data/short.fas.translation.tab`](data/short.fas.translation.tab) --  Example translation table
-- [`data/short.fas`](data/short.fas) --  Example output with short fasta headers
-- [`data/short.fas.phy`](data/short.fas.phy) --  Example Newick tree with short labels
-- [`README.md`](README.md) --  Documentation, markdown format
-- [`README.pdf`](README.pdf) --  Documentation, PDF format
+- [`replace_taxon_labels_in_newick.pl`](replace_taxon_labels_in_newick.pl) -- Perl script
+- [`data/long.fas`](data/long.fas) -- Example file with long fasta headers
+- [`data/long.fas.gz`](data/long.fas.gz) -- Example file with long fasta headers, gzip compressed
+- [`data/short.fas.translation.tab`](data/short.fas.translation.tab) -- Example translation table
+- [`data/short.fas`](data/short.fas) -- Example output with short fasta headers
+- [`data/short.fas.phy`](data/short.fas.phy) -- Example Newick tree with short labels
+- [`README.md`](README.md) -- Documentation, markdown format
 
 ## License and Copyright
 
