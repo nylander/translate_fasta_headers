@@ -1,2 +1,3 @@
-Old/
 tmp/
+*.swp
+private/*
