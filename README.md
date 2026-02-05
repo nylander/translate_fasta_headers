@@ -78,8 +78,8 @@ Print seq labels in Newick tree:
   named `<filename>.translation.tab`. This simplifies back translation.  If, on
   the other hand, `--out` is not used, the translation file will be named after
   the infile!
-- `-i, --in=<filename>` --  Specify name of fasta file. Can be skipped as
-  script reads files from STDIN.
+- `-i, --in=<filename>` --  Specify name of fasta file (can be
+  gzip-compressed). Can be skipped as script reads files from ARGV.
 - `-n, --notab` --  Do not create a translation file.
 - `-p, --prefix=<string>` --  User your own prefix (default is `Seq_`). A
   numerical will be added to the labels (e.g. `Own_1`, `Own_2`, ...)
@@ -114,7 +114,7 @@ Johan.Nylander
 
 ## License and Copyright
 
-Copyright (c) 2013-2024 Johan Nylander
+Copyright (c) 2013-2026 Johan Nylander
 
 [LICENSE](LICENSE)
 

@@ -57,7 +57,7 @@ Show this help text and quit.
 
 =head1 VERSION
 
-1.1
+1.2
 
 =head1 AUTHOR
 
@@ -69,7 +69,7 @@ L<https://github.com/nylander/translate_fasta_headers>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2019-2024 Johan Nylander
+Copyright (c) 2019-2026 Johan Nylander
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -102,7 +102,7 @@ use Getopt::Long;
 
 ## Globals
 my $prefix       = 'Seq_'; # Prefix for short names
-my $version      = '1.1'; # Also in pod
+my $version      = '1.2'; # Also in pod
 my $tabfile      = q{};
 my $in           = q{};
 my $out          = q{};
@@ -182,7 +182,17 @@ sub read_infile {
         $outtabfile = $file . '.translation.tab';
     }
 
-    open my $IN, "<", $file or die "Could not open $file for reading : $! \n";
+    ## Open input file handle (stdin, uncompressed/compressed file)
+    my $IN;
+    if (defined $file && $file eq '-') {
+        open $IN, '<&', \*STDIN or die "Could not open STDIN for reading : $! \n";
+    }
+    elsif (defined $file && $file =~ /\.gz$/i) {
+        open $IN, '-|', 'gzip', '-dc', $file or die "Could not open gzipped file $file for reading : $! \n";
+    }
+    else {
+        open $IN, '<', $file or die "Could not open $file for reading : $! \n";
+    }
 
     ## Open tab translation outfile or not
     if ($tabfile) {
