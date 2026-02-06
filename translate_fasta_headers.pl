@@ -28,7 +28,8 @@ and "long" names to the right. Translation will be from left to right.
 
 =item B<-i, --in>=F<filename>
 
-Specify name of fasta file. Can be skipped as script reads files from STDIN.
+Specify name of fasta file. The file can be compressed (gzip, .gz). The option
+can be skipped as script reads files from ARGV.
 
 =item B<-o, --out>=F<filename>
 
